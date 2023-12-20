@@ -1,0 +1,63 @@
+<?php require('template/header.phtml') ?>
+<?php var_dump(isset($deliveryIdToEdited)); ?>
+<?php var_dump(isset($_SESSION['deliveryIdToEdited'])); ?>
+<?php //var_dump($_POST['ID']); ?>
+
+<?php if (!empty($view->DeliveryPointDataSet)) { ?>
+    <?php $DeliveryPointData = $view->DeliveryPointDataSet; ?>
+        <form class = "newDeliveriesForm" action="" method="post">
+            <label for="Name">ID</label><br>
+            <input type="text" name="ID" value="<?php echo $DeliveryPointData->getDeliveryPointID(); ?>" ><br>
+            <label for="Name">Name</label><br>
+            <input type="text" name="Name" value="<?php echo $DeliveryPointData->getDeliveryPointName(); ?>"><br>
+            <label for="Address1">Address1</label><br>
+            <input type="text" name="Address1" value="<?php echo $DeliveryPointData->getAddress1(); ?>"><br><br>
+            <label for="Address2">Address2</label><br>
+            <input type="text" name="Address2" value="<?php echo $DeliveryPointData->getAddress2(); ?>"><br><br>
+            <label for="Postcode">Postcode</label><br>
+            <input type="text" name="Postcode" value="<?php echo $DeliveryPointData->getPostcode(); ?>"><br><br>
+            <label for="Deliverer">Deliverer</label><br>
+            <select name="Deliverer">
+                <?php
+                // Fetch existing deliverers from the database
+                //$deliverers = fetchDeliverers();
+
+
+                // Display each deliverer as an option in the dropdown
+                foreach ($view->deliverers as $deliverer) {
+                    if (isset($deliverer['username'])) {
+                        echo "<option value='" . $deliverer['deliverer'] . "'>" . $deliverer['username'] . "</option>";
+                    }
+                }
+                ?>
+            </select><br><br>
+            <label for="Latitude">Latitude</label><br>
+            <input type="text" name="Latitude" value="<?php echo $DeliveryPointData->getLatitude(); ?>"><br><br>
+            <label for="Longitude">Longitude</label><br>
+            <input type="text" name="Longitude" value="<?php echo $DeliveryPointData->getLongitude(); ?>"><br><br>
+            <label for="Status">Status</label><br>
+            <select name="Status">
+                <?php
+                // Fetch statuses from the database
+                // Display each status as an option in the dropdown
+                foreach ($view->statuses as $status) {
+                    if (isset($status['status_text'])) {
+                        echo "<option value='" . $status['status'] . "'>" . $status['status_text'] . "</option>";
+                    }
+                }
+                ?>
+            </select><br><br>
+            <label for="DeliveryPhoto">Delivery Photo</label><br>
+            <input type="text" name="DeliveryPhoto" value="<?php echo $DeliveryPointData->getDeliveryPhoto(); ?>"><br><br>
+
+            <button class="createButton" name="editU" type="submit">Edit</button>
+        </form>
+
+<?php } ?>
+
+<?php if (isset($view->isEdited)) { ?>
+    <p><?php echo $view->isEdited; ?></p>
+
+<?php } ?>
+
+<?php require('template/footer.phtml') ?>

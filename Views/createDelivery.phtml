@@ -1,0 +1,52 @@
+<?php require('template/header.phtml') ?>
+
+<form class = "newDeliveriesForm" action="" method="post">
+    <label for="Name">Name</label><br>
+    <input type="text" name="Name" ><br>
+    <label for="Address1">Address1</label><br>
+    <input type="text" name="Address1" ><br><br>
+    <label for="Address2">Address2</label><br>
+    <input type="text" name="Address2" ><br><br>
+    <label for="Postcode">Postcode</label><br>
+    <input type="text" name="Postcode" ><br><br>
+    <label for="Deliverer">Deliverer</label><br>
+    <select name="Deliverer">
+        <?php
+        // Fetch existing deliverers from the database
+        //$deliverers = fetchDeliverers();
+
+
+        // Display each deliverer as an option in the dropdown
+        foreach ($view->deliverers as $deliverer) {
+            if (isset($deliverer['username'])) {
+                echo "<option value='" . $deliverer['deliverer'] . "'>" . $deliverer['username'] . "</option>";
+            }
+        }
+        ?>
+    </select><br><br>
+    <label for="Latitude">Latitude</label><br>
+    <input type="text" name="Latitude" ><br><br>
+    <label for="Longitude">Longitude</label><br>
+    <input type="text" name="Longitude" ><br><br>
+    <label for="Status">Status</label><br>
+    <select name="Status">
+        <?php
+        // Fetch statuses from the database
+        // Display each status as an option in the dropdown
+        foreach ($view->statuses as $status) {
+            if (isset($status['status_text'])) {
+                echo "<option value='" . $status['status'] . "'>" . $status['status_text'] . "</option>";
+            }
+        }
+        ?>
+    </select><br><br>
+    <label for="DeliveryPhoto">Delivery Photo</label><br>
+    <input type="text" name="DeliveryPhoto" ><br><br>
+    <button class="createButton" name="create" type = "submit">Create</button>
+</form>
+
+<?php if (isset($view->isCreated)) { ?>
+    <p><?php echo $view->isCreated; ?></p>
+<?php } ?>
+
+<?php require('template/footer.phtml') ?>

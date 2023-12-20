@@ -1,0 +1,86 @@
+<?php require('template/header.phtml') ?>
+
+<?php if ($_SESSION['show_form'] /*&& $_SESSION['isLoggedIn'] == false*/) { ?>
+    <form class = "loginForm" action="" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" ><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" ><br><br>
+        <button class="btn btn-success" name="login" type = "submit">Login</button>
+        <!--<input type="submit" value="Login">-->
+    </form>
+    <?php
+    if (isset($_SESSION['error'])) {
+        var_dump($_SESSION['error']);
+        echo "<div class='error-message'>" . $_SESSION['error'] . "</div>";
+        //unset($_SESSION['error']); // Remove the error message from the session after displaying it
+    }?>
+
+<?php } ?>
+<?php if (!$_SESSION['show_form']) { ?>
+    <form action="" method="post">
+        <button name="logout" type = "submit">Logout</button>
+        <!--<input type="submit" value="Logout">-->
+    </form>
+    <?php if($_SESSION['adminFlag']) { ?>
+        <form action="deleteDelivery.php" method="POST">
+            <button class="btn btn-outline-success" name="delete" type="submit">Delete</button>
+        </form>
+        <form action="createDelivery.php" method="POST">
+            <button class="btn btn-outline-success" name="create1" type="submit">Create</button>
+        </form>
+    <?php } ?>
+<?php } ?>
+<?php var_dump($_SESSION['adminFlag']); ?>
+<?php if (isset($view->failedLogin)) : ?>
+    <p><?php echo $view->failedLogin; ?></p>
+<?php endif; ?>
+<?php if (isset($view->deliveryAdded)) : ?>
+    <p><?php echo $view->deliveryAdded; ?></p>
+<?php endif; ?>
+
+
+
+<?php if (!$_SESSION['show_form']) { ?>
+
+
+    <?php if (!empty($view->DeliveryPointDataSet)) { ?>
+
+
+        <?php foreach ($view->DeliveryPointDataSet as $DeliveryPointData): ?>
+            <div class="data-table">
+
+
+                <div class="row" id="actual-data">
+                    <div class="col-sm-1" id="column-title" ><?php echo "ID: " . $DeliveryPointData->getDeliveryPointID(); ?></div>
+                    <div class="col-sm-1"><?php echo "Name: " . $DeliveryPointData->getDeliveryPointName(); ?></div>
+                    <div class="col-sm-1"><?php echo "Address-1: " . $DeliveryPointData->getAddress1(); ?></div>
+                    <div class="col-sm-1"><?php echo "Address-2: " . $DeliveryPointData->getAddress2(); ?></div>
+                    <div class="col-sm-1"><?php echo "Postcode: " . $DeliveryPointData->getPostcode(); ?></div>
+                    <div class="col-sm-1"><?php echo "Deliverer: " . $DeliveryPointData->getDeliverer(); ?></div>
+                    <div class="col-sm-1"><?php echo "Latitude: " . $DeliveryPointData->getLatitude(); ?></div>
+                    <div class="col-sm-1"><?php echo "Longitude: " . $DeliveryPointData->getLongitude(); ?></div>
+                    <div class="col-sm-1"><?php echo "Status: " . $DeliveryPointData->getDeliveryStatus(); ?></div>
+                    <div class="col-sm-1"><?php echo "Delivery photo: "?><img alt="Delivery photo" width="80px" src="<?php echo $DeliveryPointData->getDeliveryPhoto(); ?>"></div>
+                    <?php if ($_SESSION['adminFlag']) { ?>
+                    <form class = "updatingButtons" action="editDelivery.php" method="post">
+                        <button class="btn btn-primary" name="edit" type ="submit">Edit</button>
+                        <input type="hidden" name="delivery_id" value="<?php echo $DeliveryPointData->getDeliveryPointID(); ?>">
+                    </form>
+                    <?php } ?>
+
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php } ?>
+
+
+
+<?php } ?>
+
+
+
+
+
+
+<?php require('template/footer.phtml') ?>

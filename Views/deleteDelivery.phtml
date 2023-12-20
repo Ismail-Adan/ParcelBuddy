@@ -1,0 +1,13 @@
+<?php require('template/header.phtml') ?>
+
+<form class = "updatingButtons" action="" method="post">
+    <label for="delivery_id">Delivery ID:</label>
+    <input type="text" id="delivery_id" name="delivery_id">
+    <button class="btn btn-danger" type ="submit">Delete</button>
+</form>
+
+<?php if (isset($view->isDeleted)) : ?>
+    <p><?php echo $view->isDeleted; ?></p>
+<?php endif; ?>
+
+<?php require('template/footer.phtml') ?>

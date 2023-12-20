@@ -1,0 +1,68 @@
+<?php require('template/header.phtml') ?>
+
+<?php if (!$_SESSION['show_form']) { ?>
+    <form action="index.php" method="post">
+        <button name="logout" type ="submit">Logout</button>
+        <!--<input type="submit" value="Logout">-->
+    </form>
+<?php } ?>
+<form action="deliveryPoints.php" method="post">
+    <button class="btn btn-warning" name="ASC" value="ASC" type ="submit">ASC</button>
+    <button class="btn btn-info" name="DESC" value="DESC" type ="submit">DESC</button>
+    <!--<input type="submit" value="Logout">-->
+</form>
+
+<?php if ($_SESSION['adminFlag']) { ?>
+<form action="pagination.php" method="post">
+    <button class="btn btn-danger" type="submit" name="pagination">Pagination (Does not work properly)</button>
+</form>
+<?php } ?>
+
+<?php var_dump($_SESSION['adminFlag']); ?>
+<?php var_dump($_SESSION['username']); ?>
+<?php var_dump($view->DeliveryPointDataSet); ?>
+<?php var_dump($_SESSION['show_form']); ?>
+
+
+
+<?php if (!empty($view->DeliveryPointDataSet)) { ?>
+
+
+    <?php foreach ($view->DeliveryPointDataSet as $DeliveryPointData): ?>
+        <div class="data-table">
+
+            <div class="row" id="actual-data">
+                <div class="col-sm-1" id="column-title" ><?php echo "ID: " . $DeliveryPointData->getDeliveryPointID(); ?></div>
+                <div class="col-sm-1"><?php echo "Name: " . $DeliveryPointData->getDeliveryPointName(); ?></div>
+                <div class="col-sm-1"><?php echo "Address-1: " . $DeliveryPointData->getAddress1(); ?></div>
+                <div class="col-sm-1"><?php echo "Address-2: " . $DeliveryPointData->getAddress2(); ?></div>
+                <div class="col-sm-1"><?php echo "Postcode: " . $DeliveryPointData->getPostcode(); ?></div>
+                <div class="col-sm-1"><?php echo "Deliverer: " . $DeliveryPointData->getDeliverer(); ?></div>
+                <div class="col-sm-1"><?php echo "Latitude: " . $DeliveryPointData->getLatitude(); ?></div>
+                <div class="col-sm-1"><?php echo "Longitude: " . $DeliveryPointData->getLongitude(); ?></div>
+                <div class="col-sm-1"><?php echo "Status: " . $DeliveryPointData->getDeliveryStatus(); ?></div>
+                <div class="col-sm-1"><?php echo "Delivery photo: "?><img alt="Delivery photo" width="80px" src="<?php echo $DeliveryPointData->getDeliveryPhoto(); ?>"></div>
+                <?php //if ($_SESSION['adminFlag']) { ?>
+                <form class = "updatingButtons" action="" method="post">
+                    <button class="btn btn-primary" type ="submit">Edit</button>
+                    <input type="hidden" name="delivery_id" value="<?php echo $DeliveryPointData->getDeliveryPointID(); ?>">
+
+                </form>
+                <?php //} ?>
+
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php } ?>
+
+<?php if (isset($_POST['pagination'])) { ?>
+<div class="pagination">
+    <?php for ($i = 1; $i <= $view->totalPages; $i++) : ?>
+        <a href="pagination.php?page=<?php echo $i; ?>"<?php echo ($i == $view->currentPage) ? ' class="active"' : ''; ?>>
+            <?php echo $i; ?>
+        </a>
+    <?php endfor; ?>
+</div>
+<?php } ?>
+
+<?php require('template/footer.phtml') ?>
